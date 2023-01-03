@@ -21,6 +21,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@radix-ui/react-dialog": "^1.0.2",
     "bootstrap": "^5.2.3",
+    "create-custom-error": "^1.0.0",
     "fuse.js": "^6.6.2",
     "mdb-react-ui-kit": "^5.1.0",
     "prop-types": "^15.8.1",
