@@ -1,18 +1,19 @@
 import { Stack, Button, Form } from "react-bootstrap"
-import { useRef } from 'react'
+import { createRef } from 'react'
 import { MDBIcon } from 'mdb-react-ui-kit';
 import * as Dialog from '@radix-ui/react-dialog';
 import './style.css';
 
-const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }) => {
+const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }: any) => {
 
-  const perPageNum = useRef();
-  const sortByRef = useRef();
+  const perPageNum = createRef<HTMLInputElement>();
+  const sortByRef = createRef<HTMLSelectElement>();
+
 
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button variant="outline-primary" height="18px"><MDBIcon fas icon="cog" /></Button>
+        <Button variant="outline-primary"><MDBIcon fas icon="cog" /></Button>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay" />
@@ -45,9 +46,9 @@ const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }) => 
             </Dialog.Close>
             <Dialog.Close asChild>
               <Button variant="btn btn-outline-primary" style={{ margin: "0px 10px 0px 10px", width: "30%" }} onClick={() => {
-                if (perPageNum.current.value == perPage && sortByRef.current.value == sortBy) return;
-                setPerPage(perPageNum.current.value);
-                setSortBy(sortByRef.current.value);
+                if ((perPageNum.current && perPageNum.current.value == perPage) && (sortByRef.current && sortByRef.current.value == sortBy)) return;
+                if (perPageNum.current) setPerPage(perPageNum.current.value);
+                if (sortByRef.current) setSortBy(sortByRef.current.value);
                 setPage(1);
               }}>  Done  </Button>
             </Dialog.Close>

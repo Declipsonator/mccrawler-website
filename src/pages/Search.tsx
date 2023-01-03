@@ -1,14 +1,13 @@
-import { Stack, Form, Button } from "react-bootstrap"
-import { useRef } from 'react'
+import { Stack, Form, Button } from "react-bootstrap";
+import { createRef } from 'react';
 import Servers from "../components/Servers";
 import SettingsDialog from '../components/SettingsDialog';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import { useQueryString } from '../hooks/useQueryString';
 
-
 export default function Search() {
-  const [page, setPage] = useQueryString("page", 1);
-  const [perPage, setPerPage] = useQueryString("perPage", 50);
+  const [page, setPage] = useQueryString("page", "1");
+  const [perPage, setPerPage] = useQueryString("perPage", "50");
   const [searchQuery, setSearchQuery] = useQueryString("query", "");
   const [sortBy, setSortBy] = useQueryString("sortBy", "relevancy");
 
@@ -19,10 +18,7 @@ export default function Search() {
   }
 
   const urlParams = new URLSearchParams(location.search);
-  const searchFieldText = useRef();
-
-  const handleSubmit = () => {
-  };
+  const searchFieldText = createRef<HTMLInputElement>();
 
 
   return <div style={{ padding: "15px" }}>
@@ -32,14 +28,15 @@ export default function Search() {
     <Stack direction="horizontal" gap={2} >
       <Form.Control id="search" style={{ alignContent: "left" }} ref={searchFieldText} onKeyPress={e => {
         if (e.key === 'Enter') {
-          setSearchQuery(searchFieldText.current.value);
+          setSearchQuery(searchFieldText.current ? searchFieldText.current.value : "");
+          setPage(1);
         }
-      }} placeholder="A really cool server" required type="text" defaultValue={urlParams.get('query')}></Form.Control>
+      }} placeholder="A really cool server" required type="text" defaultValue={urlParams.get('query') ? urlParams.get('query') : ""}></Form.Control>
       <Button variant="outline-primary" onClick={() => {
-        setSearchQuery(searchFieldText.current.value);
+        setSearchQuery(searchFieldText.current ? searchFieldText.current.value : "");
         setPage(1);
       }}>Search</Button>
-      <SettingsDialog perPage={perPage} setPerPage={setPerPage} sortBy={sortBy} setSortBy={setSortBy} setPage={setPage}/>
+      <SettingsDialog perPage={perPage} setPerPage={setPerPage} sortBy={sortBy} setSortBy={setSortBy} setPage={setPage} />
     </Stack>
     <br />
     <Servers perPage={perPage} setPerPage={setPerPage} searchQuery={searchQuery} sortBy={sortBy} page={page} setPage={setPage} />

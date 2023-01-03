@@ -4,9 +4,9 @@ import { useRef } from 'react'
 import { MDBIcon } from 'mdb-react-ui-kit';
 
 
-const PageFlipper = ({page, setPage, pages}) => {
+const PageFlipper = ({page, setPage, pages}: any) => {
   const pageFieldText = useRef();
-  const handleSubmit = (pageNum) => {
+  const handleSubmit = (pageNum: any) => {
     setPage(pageNum)
     window.scrollTo(0, 0)
   };

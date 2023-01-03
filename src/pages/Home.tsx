@@ -1,6 +1,5 @@
 import { Stack, Form, Button, Alert, Nav, Navbar, Container, NavDropdown, Offcanvas } from "react-bootstrap";
-import { useState, useRef } from 'react';
-import style from './general.css';
+import { createRef } from "react";
 
 export default function Home() {
   const image = new Image();
@@ -9,11 +8,11 @@ export default function Home() {
     document.body.style.backgroundImage = `url(${image.src})`;
   }
 
-  const searchFieldText = useRef();
+  const searchFieldText = createRef<HTMLInputElement>();
   const urlParams = new URLSearchParams(location.search);
 
   const handleSubmit = () => {
-    var perPage = urlParams.set('query', searchFieldText.current.value);
+    var perPage = urlParams.set('query', searchFieldText.current ? searchFieldText.current.value : "");
     const url = window.location.protocol + "//" +
       window.location.host +
       "/search?" +
@@ -29,7 +28,7 @@ export default function Home() {
     <br />
     <Stack direction="horizontal" gap={2} >
       <Form.Control id="search" ref={searchFieldText} onKeyPress={e => {
-        if (event.key === 'Enter') {
+        if (e.key == 'Enter') {
           handleSubmit();
         }
       }} placeholder="A really cool server" required type="text"></Form.Control>

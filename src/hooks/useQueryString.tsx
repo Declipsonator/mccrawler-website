@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import query from "query-string";
 
-const setQueryStringWithoutPageReload = queryValue => {
+const setQueryStringWithoutPageReload = (queryValue: string) => {
   if (typeof window === "undefined") return;
 
   const newurl = window.location.protocol + "//" +
@@ -13,17 +13,17 @@ const setQueryStringWithoutPageReload = queryValue => {
 };
 
 export const getQueryStringValue = (
-  key,
-  queryString = (typeof window === "undefined") ? "" : window.location.search
+  key: string,
+  queryString: string = (typeof window === "undefined") ? "" : window.location.search
 ) => {
   const values = query.parse(queryString);
   return values[key];
 };
 
 const setQueryStringValue = (
-  key,
-  value,
-  queryString = (typeof window === "undefined") ? "" : window.location.search
+  key: string,
+  value: string,
+  queryString: string = (typeof window === "undefined") ? "" : window.location.search
 ) => {
   const values = query.parse(queryString);
   let newQueryValue = { ...values, [key]: value }
@@ -32,11 +32,11 @@ const setQueryStringValue = (
 };
 
 
-export function useQueryString(key, initialValue) {
+export function useQueryString(key: string, initialValue: string) {
   const [value, setValue] = useState(getQueryStringValue(key) || initialValue);
 
   const onSetValue = useCallback(
-    newValue => {
+    (newValue: string) => {
       setValue(newValue);
       setQueryStringValue(key, newValue !== initialValue && newValue);
     },

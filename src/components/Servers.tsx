@@ -4,7 +4,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import ServerBox from './ServerBox';
 import PageFlipper from './PageFlipper';
 import { useQueryString } from '../hooks/useQueryString';
-import AdSense from 'react-adsense';
 
 const fuse = new Fuse([], {
   shouldSort: true,
@@ -33,19 +32,19 @@ const fuse = new Fuse([], {
   ]
 })
 
-const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }) => {
+const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }: any) => {
 
   const [servers, setServers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     if (searchQuery !== '' && servers.length > 0) {
-      fuse.setCollection(servers.filter(server => {
+      fuse.setCollection(servers.filter((server: { online: boolean }) => {
         return server.online;
       }));
       setSearchResults(fuse.search(searchQuery).map(result => result.item));
     } else {
-      setSearchResults(servers.filter(server => server.online));
+      setSearchResults(servers.filter((server: { online: boolean }) => server.online));
     }
   }, [searchQuery, servers]);
 
@@ -59,8 +58,8 @@ const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }) =>
 
   if (servers.length > 0) {
     var use = searchResults;
-    if (sortBy == "playerCount") use.sort((a, b) => a.current_players < b.current_players);
-    const serverArray = use.map((server) => {
+    if (sortBy == "playerCount") use.sort((a: { current_players: number }, b: { current_players: number }) => a.current_players > b.current_players ? -1 : a.current_players < b.current_players ? 1 : 0);
+    const serverArray = use.map((server: { ip: any }) => {
       return <ServerBox key={server.ip} server={server} />
     })
     return (
@@ -68,15 +67,15 @@ const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }) =>
         <section>
           {serverArray.slice((page - 1) * perPage, page * perPage)}
           <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9894536815792662"
-     crossOrigin="anonymous"></script>
+            crossOrigin="anonymous"></script>
           <ins className="adsbygoogle"
-               style={{display:"block"}}
-               data-ad-format="fluid"
-               data-ad-layout-key="-h1-5+1v-2l-d"
-               data-ad-client="ca-pub-9894536815792662"
-               data-ad-slot="2135140953"></ins>
+            style={{ display: "block" }}
+            data-ad-format="fluid"
+            data-ad-layout-key="-h1-5+1v-2l-d"
+            data-ad-client="ca-pub-9894536815792662"
+            data-ad-slot="2135140953"></ins>
           <script>
-               (adsbygoogle = window.adsbygoogle || []).push({});
+            (adsbygoogle = window.adsbygoogle || []).push({});
           </script>
         </section>
         <hr />
@@ -90,7 +89,7 @@ const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }) =>
     margin: 0 auto;
     border-color: red;
   `;
-  return <div><ClipLoader color={'#fff'} loading={true} css={override} size={70} /></div>;
+  return <div><ClipLoader color={'#fff'} loading={true} size={70} /></div>;
 }
 
 export default Servers;
