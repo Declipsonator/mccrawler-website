@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/search">Search</Nav.Link>
-            <Nav.Link href="#pricing">Donate</Nav.Link>
+            <Nav.Link href="https://nowpayments.io/donation/McCrawler">Donate</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
