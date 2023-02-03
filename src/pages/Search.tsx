@@ -10,7 +10,8 @@ export default function Search() {
   const [perPage, setPerPage] = useQueryString("perPage", "50");
   const [searchQuery, setSearchQuery] = useQueryString("query", "");
   const [sortBy, setSortBy] = useQueryString("sortBy", "relevancy");
-
+  const [serverStatus, setServerStatus] = useQueryString("status", "online");
+  
   var image = new Image();
   image.src = 'searchBackground.png';
   image.onload = () => {
@@ -36,9 +37,9 @@ export default function Search() {
         setSearchQuery(searchFieldText.current ? searchFieldText.current.value : "");
         setPage(1);
       }}>Search</Button>
-      <SettingsDialog perPage={perPage} setPerPage={setPerPage} sortBy={sortBy} setSortBy={setSortBy} setPage={setPage} />
+      <SettingsDialog perPage={perPage} setPerPage={setPerPage} sortBy={sortBy} setSortBy={setSortBy} setPage={setPage} serverStatus={serverStatus} setServerStatus={setServerStatus} />
     </Stack>
     <br />
-    <Servers perPage={perPage} setPerPage={setPerPage} searchQuery={searchQuery} sortBy={sortBy} page={page} setPage={setPage} />
+    <Servers perPage={perPage} setPerPage={setPerPage} searchQuery={searchQuery} sortBy={sortBy} page={page} setPage={setPage} serverStatus={serverStatus}/>
   </div >;
 }

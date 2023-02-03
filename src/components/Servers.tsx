@@ -32,7 +32,7 @@ const fuse = new Fuse([], {
   ]
 })
 
-const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }: any) => {
+const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage, serverStatus }: any) => {
 
   const [servers, setServers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -40,14 +40,28 @@ const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage }: an
   useEffect(() => {
     if (searchQuery !== '' && servers.length > 0) {
       fuse.setCollection(servers.filter((server: { online: boolean }) => {
-        return server.online;
+        if(serverStatus == "all") return true;
+        else if(serverStatus == "online" && server.online) return true;
+        else if(serverStatus == "offline" && !server.online) return true;
       }));
       setSearchResults(fuse.search(searchQuery).map(result => result.item));
     } else {
-      setSearchResults(servers.filter((server: { online: boolean }) => server.online));
+      setSearchResults(servers.filter((server: { online: boolean }) => {
+        if(serverStatus == "all") return true;
+        else if(serverStatus == "online" && server.online) return true;
+        else if(serverStatus == "offline" && !server.online) return true;
+      }));
     }
   }, [searchQuery, servers]);
 
+  useEffect(() => {
+      setSearchResults(servers.filter((server: { online: boolean }) => {
+        if(serverStatus == "all") return true;
+        else if(serverStatus == "online" && server.online) return true;
+        else if(serverStatus == "offline" && !server.online) return true;
+      }));
+  }, [serverStatus])
+  
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/Declipsonator/Server-Info/main/Servers.json')
       .then(res => res.json())

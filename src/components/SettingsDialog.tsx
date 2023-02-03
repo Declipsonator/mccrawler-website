@@ -4,11 +4,11 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 import * as Dialog from '@radix-ui/react-dialog';
 import './style.css';
 
-const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }: any) => {
+const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage, serverStatus, setServerStatus }: any) => {
 
   const perPageNum = createRef<HTMLInputElement>();
   const sortByRef = createRef<HTMLSelectElement>();
-
+  const serverStatusRef = createRef<HTMLSelectElement>();
 
   return (
     <Dialog.Root>
@@ -34,10 +34,23 @@ const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }: any
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <h5>Sort by: </h5>
+            <h5>Sort By: </h5>
             <select ref={sortByRef} defaultValue={sortBy} className="form-control" style={{ width: "100px" }}>    test
               <option value="relevancy">Relevancy</option>
               <option value="playerCount">Player Count</option>
+            </select>
+          </Stack>
+          <br />
+          <Stack direction="horizontal" gap={2} style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <h5>Server Status: </h5>
+            <select ref={serverStatusRef} defaultValue={serverStatus} className="form-control" style={{ width: "100px" }}>    test
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+              <option value="all">All</option>
             </select>
           </Stack>
           <div style={{ flexDirection: "row", margin: "10px 10px 10px 10px" }}>
@@ -46,9 +59,13 @@ const SettingsDialog = ({ perPage, setPerPage, sortBy, setSortBy, setPage }: any
             </Dialog.Close>
             <Dialog.Close asChild>
               <Button variant="btn btn-outline-primary" style={{ margin: "0px 10px 0px 10px", width: "30%" }} onClick={() => {
-                if ((perPageNum.current && perPageNum.current.value == perPage) && (sortByRef.current && sortByRef.current.value == sortBy)) return;
+                if ((perPageNum.current && perPageNum.current.value == perPage) && 
+                    (sortByRef.current && sortByRef.current.value == sortBy) &&
+                   (serverStatusRef.current && serverStatusRef.current.value == serverStatus)) return;
                 if (perPageNum.current) setPerPage(perPageNum.current.value);
                 if (sortByRef.current) setSortBy(sortByRef.current.value);
+                if (serverStatusRef.current) setServerStatus(serverStatusRef.current.value);
+                
                 setPage(1);
               }}>  Done  </Button>
             </Dialog.Close>
