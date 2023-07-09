@@ -5,17 +5,13 @@ import ServerBox from './ServerBox';
 import PageFlipper from './PageFlipper';
 import { useQueryString } from '../hooks/useQueryString';
 
-const fuse = new Fuse([], {
+const normal = new Fuse([], {
   shouldSort: true,
-  threshold: 0.35,
+  threshold: 0.20,
   keys: [
     {
       name: "description",
       weight: 2.5
-    },
-    {
-      name: "known_players",
-      weight: 1
     },
     {
       name: "version",
@@ -32,19 +28,45 @@ const fuse = new Fuse([], {
   ]
 })
 
-const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage, serverStatus }: any) => {
+const players = new Fuse([], {
+  shouldSort: true,
+  threshold: 0.20,
+  keys: [
+    {
+      name: "known_players.name",
+      weight: 1
+    },
+    {
+      name: "known_players.id",
+      weight: 1
+    }
+  ]
+})
+
+
+
+const Servers = ({ perPage, setPerPage, searchQuery, sortBy, searchBy, page, setPage, serverStatus }: any) => {
 
   const [servers, setServers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     if (searchQuery !== '' && servers.length > 0) {
-      fuse.setCollection(servers.filter((server: { online: boolean }) => {
-        if(serverStatus == "all") return true;
-        else if(serverStatus == "online" && server.online) return true;
-        else if(serverStatus == "offline" && !server.online) return true;
-      }));
-      setSearchResults(fuse.search(searchQuery).map(result => result.item));
+      if(searchBy == "normal") {
+        normal.setCollection(servers.filter((server: { online: boolean }) => {
+          if(serverStatus == "all") return true;
+          else if(serverStatus == "online" && server.online) return true;
+          else if(serverStatus == "offline" && !server.online) return true;
+        }));
+        setSearchResults(normal.search(searchQuery).map(result => result.item));
+      } else if(searchBy == "players") {
+        players.setCollection(servers.filter((server: { online: boolean }) => {
+          if(serverStatus == "all") return true;
+          else if(serverStatus == "online" && server.online) return true;
+          else if(serverStatus == "offline" && !server.online) return true;
+        }));
+        setSearchResults(players.search(searchQuery).map(result => result.item));
+      }
     } else {
       setSearchResults(servers.filter((server: { online: boolean }) => {
         if(serverStatus == "all") return true;
@@ -74,6 +96,7 @@ const Servers = ({ perPage, setPerPage, searchQuery, sortBy, page, setPage, serv
     var use = searchResults;
     if (sortBy == "playerCount") use.sort((a: { current_players: number }, b: { current_players: number }) => a.current_players > b.current_players ? -1 : a.current_players < b.current_players ? 1 : 0);
     const serverArray = use.map((server: { ip: any }) => {
+      // @ts-ignore
       return <ServerBox key={server.ip} server={server} />
     })
     return (

@@ -21,9 +21,9 @@ export const getQueryStringValue = (
 };
 
 const setQueryStringValue = (
-  key: string,
-  value: string,
-  queryString: string = (typeof window === "undefined") ? "" : window.location.search
+    key: string,
+    value: false | string,
+    queryString: string = (typeof window === "undefined") ? "" : window.location.search
 ) => {
   const values = query.parse(queryString);
   let newQueryValue = { ...values, [key]: value }

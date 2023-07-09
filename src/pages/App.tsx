@@ -6,12 +6,12 @@ import Search from "./Search";
 export default function App() {
   
   return (
-    <Router>
-      <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/search" element={<Search />} />
-      </Routes>
-    </Router>
+      <Router>
+          <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/search" element={<Search />} />
+          </Routes>
+      </Router>
 );
 }
